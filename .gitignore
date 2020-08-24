@@ -1,6 +1,6 @@
 /docker-persistent-data*
 .cache-loader
-node_modules/.cache
+/node_modules
 /*.ini
 *.pyc
 /static
