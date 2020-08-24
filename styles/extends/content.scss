@@ -1,0 +1,123 @@
+// Copy
+@include describe(text-center){
+	text-align: center;
+}
+@include describe(text-left){
+	text-align: left;
+}
+@include describe(text-right){
+	text-align: right;
+}
+@include describe(align-middle){
+	vertical-align: middle;
+}
+@include describe(align-top){
+	vertical-align: top;
+}
+@include describe(uppercase){
+	text-transform: uppercase;
+}
+@include describe(decoration-none){
+	text-decoration: none;
+}
+@include describe(quotes){
+	&::before {
+		content:open-quote;
+	}
+	&::after {
+		content:close-quote;
+	}
+}
+@include describe(hide-visually){
+	position:absolute; 
+	left:-10000px; 
+	top:auto; 
+	width:1px; 
+	height:1px; 
+	overflow:hidden;
+}
+@include describe(ellipsis){
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+@include describe(hyphenate){
+	hyphens: auto;
+}
+
+@each $name, $value in project(color-pallet) {
+	@include describe(text-#{$name}){
+		color: $value;
+	}
+}
+@each $name, $value in project(font-families) {
+	@include describe(font-#{$name}){
+		font-family: $value;
+	}
+}
+@each $name, $value in project(font-sizes) {
+	@include describe(font-size-#{$name}){
+		font-size: $value;
+	}
+}
+@each $name, $value in project(font-weights) {
+	@include describe(font-#{$name}){
+		font-weight: $value;
+	}
+}
+@each $name, $value in project(line-heights) {
+	@include describe(line-height-#{$name}){
+		line-height: $value;
+	}
+}
+@each $i, $value in project(heading-colors) {
+	@include describe(h#{$i}-color){
+		color: $value;
+	}
+}
+
+@each $i, $size in project(heading-sizes) {
+    @include describe(h#{$i}-size){
+		font-size: $size;
+	}
+	@include describe(h#{$i}-size-force){
+		font-size: $size !important;
+	}
+	@include describe(h#{$i}-style,(
+		h#{$i}-size,
+		font-bold,
+		line-height-heading
+	));
+	@include describe(h#{$i},(
+		h#{$i}-size,
+		h#{$i}-color,
+		font-bold,
+		line-height-heading,
+	));
+}
+
+@include describe(content-blank){
+	content: "";
+}
+
+// %list-style{
+// 	ul {
+// 		@extend %no-padding;
+// 		li {
+// 			@extend %relative;
+// 			@extend %padding-base-plus-left;
+// 			&::before {
+// 				@extend %content-blank;
+// 				@extend %block;
+// 				@extend %absolute;
+// 				@extend %border-radius-3;
+// 				@extend %bg-color-yellow;
+// 				width: 0.5rem;
+// 				height: 0.5rem;
+// 				left: 0;
+// 				top: 0.7em;
+// 			}
+// 		}
+// 		list-style: none;
+// 	}
+// }

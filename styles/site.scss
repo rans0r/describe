@@ -1,0 +1,61 @@
+@import 'project';
+@import 'extends/bundle';
+//@import 'normalize';
+
+
+@include describe('border'){
+	border-width: 1px;
+}
+
+@include describe('rounded'){
+	border-radius: 0.25rem;
+}
+
+@include describe('shadow'){
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+@include describe('padding-1'){
+	padding: 1rem;
+}
+
+@include describe('padding-2'){
+	padding: 2rem;
+}
+
+
+@include describe('button',(
+	padding-1-mobile,
+	padding-2-desktop,
+	text-gray,
+	font-bold,
+	rounded,
+	shadow,
+	pointer
+));
+
+@include describe('button-red',(
+	button,
+	bg-red
+));
+
+@include describe('button-green',(
+	button,
+	bg-green
+));
+
+a[role="button"] {
+	@include extend(
+		button-red
+	);
+	&:hover {
+		@include extend(bg-gray);
+	}
+	&:active {
+		@include extend(bg-gray);
+	}
+}
+
+comp-card {
+	@include extend(padding-1-mobile);
+}

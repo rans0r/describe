@@ -1,0 +1,12 @@
+/docker-persistent-data*
+.cache-loader
+node_modules/.cache
+/*.ini
+*.pyc
+/static
+.env
+docker-compose.yml
+fabfile.json
+index.php
+package.json
+/scripts
