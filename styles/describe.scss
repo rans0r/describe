@@ -1,17 +1,9 @@
 $_describe_project: (
-	breakpoints: (
-		default: (
-			mobile: 	767px,
-			desktop: 	768px
-		),
-		smaller: (
-			mobile: 	400px,
-			desktop: 	401px
-		),
-		large: (
-			mobile: 	999px,
-			desktop: 	1000px
-		),
+	screens: (
+		sm: 640px, // sm = 0 - 639
+		md: 768px, // md = 640 - 767, sm-md-lg-xl
+		lg: 1024px, // lg = 768 - 1023
+		xl: 1280px // xl = 1024 and up, use 1280 as the point that scaling starts on the 
 	),
 	colors: (
 		black: 			#000,
@@ -161,43 +153,140 @@ $_describe_project: (
 		heading: 		1.25,
 		reset: 			1
 	),
+	zIndex: (
+		auto: 			'auto',
+		'0': 			0,
+		'10': 			10,
+		'20': 			20,
+		'30': 			30,
+		'40': 			40,
+		'50': 			50
+	),
+	opacity: (
+		'0': 			0,
+		'25': 			0.25,
+		'50': 			0.5,
+		'75': 			0.75,
+		'100': 			1
+	),
 );
 
 $_describe_extends: ();
 
-@mixin break($size,$type:default) {
-	$breakpoints: map-get($_describe_project, 'breakpoints');
-	@if $size == desktop {
-		@media (min-width: map-get(map-get($breakpoints, $type), $size)) {
-			@content;
+
+@function get-bucket($points, $key) {
+	$prev: 0;
+	$cur: 0;
+	$before: 0;
+
+	@each $label, $value in $points {
+		@if $label == $key {
+			$cur: $value;
+			$before: $prev;
+		}
+		$prev: $value;
+	}
+
+	@return (
+		from: $before,
+		to: $cur - 1,
+		last: $cur == $prev
+	);
+
+}
+
+@mixin break($key-list) {
+	$breakpoints: project(screens);
+
+	$keys: str-explode($key-list,'-');
+
+	$buckets: ();
+	$last-key: 0;
+	$last-bucket: (
+		from: 0,	
+		to: '1px'
+	);
+
+	@each $key in $keys {
+		$from: map-get($last-bucket,'from');
+		$to: map-get($last-bucket,'to') + 1;
+		$last-bucket: get-bucket($breakpoints, $key);
+		@if $to == map-get($last-bucket,'from') {
+			$buckets: map_merge($buckets, (
+				quote($last-key): map_merge(map_get($buckets,$last-key),(
+					to: map-get($last-bucket,'to'),
+					last: map-get($last-bucket,'last')
+				))
+			));
+		}
+		@else {
+			$buckets: map-merge($buckets, (
+				quote($key): $last-bucket
+			));
+			$last-key: $key;
 		}
 	}
 
-	@else if $size == mobile {
-		@media (max-width: map-get(map-get($breakpoints, $type), $size)) {
-			@content;
+	$media-query: '';
+
+	@each $label, $bucket in $buckets {
+		@if $media-query != '' {
+			$media-query: '#{$media-query}, ';
 		}
+		$from: map-get($bucket,'from');
+		$to: map-get($bucket,'to');
+		$last: map-get($bucket,'last');
+		@if $last {
+			$media-query: '#{$media-query}(min-width: #{$from})';
+		}
+		@else if $from == 0 {
+			$media-query: '#{$media-query}(max-width: #{$to})';
+		}
+		@else {
+			$media-query: '#{$media-query}(min-width: #{$from}) and (max-width: #{$to})';
+		}
+	}
+
+	@media #{$media-query} {
+		@content;
 	}
 }
 
-@mixin responsiveExtend($name){
-	$breakpoints: map-get($_describe_project, 'breakpoints');
-	// Default Extend
+@mixin responsiveExtend($name) {
+	$breakpoints: project(screens);
+	$breakpoints-length: length($breakpoints);
+	
 	%#{$name} {
 		@content;
 	}
 
-	// Extend for every breakpoint in the breakpoints map. name-type-breakpoint, or for default name-breakpoint
-	@each $label, $map in $breakpoints {
-		@each $type, $map in map-get($breakpoints,$label) {
-			$section: if($label == default,"",-#{$label});
-			%#{$name}#{$section}-#{$type} {
-				@include break($type,$label){
-					@content;
-				}
+	@each $label, $value in $breakpoints {
+		$index: index($breakpoints, $label $value);
+		$combo: $label;
+		$clip: 0;
+		@if($index == 1) {
+			$clip: 1;
+		}
+
+		// Single breakpoint
+		%#{$name}-#{$label} {
+			@include break($label){
+				@content;
 			}
 		}
-	}
+
+		@if $index < $breakpoints-length {
+			@for $i from ($index + 1) through ($breakpoints-length - $clip) {
+				$key: nth(map-keys($breakpoints), $i);
+				$combo: '#{$combo}-#{$key}';
+				%#{$name}-#{$combo} {
+					@include break($combo){
+						@content;
+					}
+				}
+			}			
+		}
+	}	
 }
 
 @mixin describe($it,$is: ()) {
@@ -215,22 +304,47 @@ $_describe_extends: ();
 			quote($it): $is
 		)) !global;
 
-		$breakpoints: map-get($_describe_project, 'breakpoints');
 
-		// Extend for every breakpoint in the breakpoints map. name-type-breakpoint, or for default name-breakpoint
-		@each $label, $map in $breakpoints {
-			@each $type, $map in map-get($breakpoints,$label) {
-				$section: if($label == default,'',-#{$label});
-				$name: #{$it}#{$section}-#{$type};
-				$extends: ();
-				@each $ext in $is {
-					$extends: append($extends, #{$ext}#{$section}-#{$type});
-				}
-				$_describe_extends: map-merge($_describe_extends, (
-					quote($name): $extends
-				)) !global;
+
+		// Extend for every breakpoint in the breakpoints map. name-breakpoint, name-breakpoint-breakpoint
+
+		$breakpoints: project(screens);
+		$breakpoints-length: length($breakpoints);
+
+		@each $label, $value in $breakpoints {
+			$index: index($breakpoints, $label $value);
+			$combo: $label;
+			$clip: 0;
+			@if($index == 1) {
+				$clip: 1;
 			}
-		}
+
+			// Single breakpoint
+			$name: #{$it}-#{$label};
+			$extends: ();
+			@each $ext in $is {
+				$extends: append($extends, #{$ext}-#{$label});
+			}
+			$_describe_extends: map-merge($_describe_extends, (
+				quote($name): $extends
+			)) !global;
+
+
+			@if $index < $breakpoints-length {
+				@for $i from ($index + 1) through ($breakpoints-length - $clip) {
+					$key: nth(map-keys($breakpoints), $i);
+					$combo: '#{$combo}-#{$key}';
+					$name: #{$it}-#{$combo};
+					$extends: ();
+					@each $ext in $is {
+						$extends: append($extends, #{$ext}-#{$combo});
+					}
+					$_describe_extends: map-merge($_describe_extends, (
+						quote($name): $extends
+					)) !global;
+				}			
+			}
+		}	
 	}	
 }
 
@@ -248,6 +362,7 @@ $_describe_extends: ();
 		}
 	}
 }
+
 @function deep-map-check ($map, $keys...) {
 	@if type-of($map) !='map' {
 		@error 'The argument $map: `#{$map}` is of incorrect type: `#{type-of($map)}`. Type of `Map` is required!';
