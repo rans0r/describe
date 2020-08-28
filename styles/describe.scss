@@ -195,6 +195,16 @@ $_describe_extends: ();
 
 }
 
+@mixin htmlBase($base-unit: 16px){
+	$breakpoints: project(screens);
+	$max: nth(map-values($breakpoints), length($breakpoints));
+	font-size: $base-unit;
+	scroll-behavior: smooth;
+	@media (min-width: #{$max}){
+		font-size: ($base-unit / ($max / 100)) * 1vw
+	}
+}
+
 @mixin break($key-list) {
 	$breakpoints: project(screens);
 
