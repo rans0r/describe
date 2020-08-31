@@ -1,20 +1,20 @@
 @import 'describe';
 @include describe('project',(
-	screens: (
-		sm: 640px,
-		md: 768px,
-		lg: 1024px,
-		xl: 1280px
+	'screens': (
+		'sm': 640px,
+		'md': 768px,
+		'lg': 1024px,
+		'xl': 1280px
 	),
-	color-pallet: (
-		transparent: 	transparent,
-		current:		currentColor,
-		black: 			'@colors.black',
-		white:			'@colors.white',
-		red:			'@colors.red-600',
-		gray: 			'@colors.gray-200',
-		green:			'@colors.green-600'
-	),
+	'color-pallet': (
+		'transparent': 		transparent,
+		'current':			currentColor,
+		'black': 			'@colors.black',
+		'white':			'@colors.white',
+		'red':				'@colors.red-600',
+		'gray': 			'@colors.gray-200',
+		'green':			'@colors.green-600'
+	)
 ));
 html {
 	// Scale all elements with the screen when past the maximum screen size.
