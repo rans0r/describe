@@ -1,29 +1,6 @@
-@each $name, $value in project('color-pallet') {
-	@include describe(bg-#{$name}){
-		background-color: $value;
-	}
-	@if type-of($value) == 'color' {
-		@include describe(bg-#{$name}-dark){
-			background-color: darken($value,20%);
-		}
-		@include describe(bgimg-color-#{$name}){
-			background: {
-				image: solidGradient($value);
-				repeat: no-repeat;
-			}
-		}		
-	}
-	@include describe(border-#{$name}){
-		border-color: $value;
-	}
-}
 
-@include describe(bgimg-full-size) {
-	background-size: 100% 100%;
-}
-@include describe(bgimg-full-height) {
-	background-size: auto 100%;
-}
+
+
 @include describe(bgimg-no-repeat) {
 	background-repeat: no-repeat;
 }
@@ -39,12 +16,7 @@
 @include describe(bgimg-right-top) {
 	background-position: right top;
 }
-@include describe(bgimg-cover) {
-	background-size: cover;
-}
-@include describe(bgimg-contain) {
-	background-size: contain;
-}
+
 
 // Cursor 
 @include describe(pointer){

@@ -169,6 +169,7 @@ $_describe_project: (
 		'75': 			0.75,
 		'100': 			1
 	),
+	'utilities': ()
 );
 
 $_describe_extends: ();
@@ -299,9 +300,24 @@ $_describe_extends: ();
 	}	
 }
 
+@mixin applyUtilities() {
+	$utilities: project(utilities);
+	@each $key, $list in $utilities {
+		$nameAttr: str-explode($key, ':');
+		$name: nth($nameAttr,1);
+		$attr: nth($nameAttr,2);
+		@each $itemName, $itemValue in map-get($list,$key) {
+			@include describe(#{$name}-#{$itemName}){
+				#{$attr}: $itemValue;
+			}
+		}
+	}
+}
+
 @mixin describe($it,$is: ()) {
 	@if $it == 'project' {
 		$_describe_project: map-merge($_describe_project, $is) !global;
+		@include applyUtilities();
 	}
 	@else{
 		@include responsiveExtend(#{$it}-base){
@@ -314,10 +330,7 @@ $_describe_extends: ();
 			quote($it): $is
 		)) !global;
 
-
-
 		// Extend for every breakpoint in the breakpoints map. name-breakpoint, name-breakpoint-breakpoint
-
 		$breakpoints: project(screens);
 		$breakpoints-length: length($breakpoints);
 

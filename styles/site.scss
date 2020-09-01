@@ -26,7 +26,7 @@
 @include describe('button',(
 	padding-1-sm-md,
 	padding-2-lg-xl,
-	text-gray-md-lg,
+	text-color-gray-md-lg,
 	font-bold,
 	rounded,
 	shadow,
@@ -35,23 +35,24 @@
 
 @include describe('button-red',(
 	button,
-	bg-red
+	bg-color-red
 ));
 
 @include describe('button-green',(
 	button,
-	bg-green
+	bg-color-green
 ));
 
 a[role="button"] {
 	@include extend(
-		button-red
+		button-red,
+		bgimg-full-size
 	);
 	&:hover {
-		@include extend(bg-gray);
+		@include extend(bg-color-gray);
 	}
 	&:active {
-		@include extend(bg-gray);
+		@include extend(bg-color-gray);
 	}
 }
 

@@ -14,7 +14,20 @@
 		'red':				'@colors.red-600',
 		'gray': 			'@colors.gray-200',
 		'green':			'@colors.green-600'
+	),
+	'background-sizes': (
+		'full-size': 100% 100%,
+		'full-height': auto 100%,
+		'cover': cover,
+		'contain': contain
+	),
+	'utilities': (
+		'text-color:color': '@color-pallet',
+		'bg-color:background-color': '@color-pallet',
+		'border-color:border-color': '@color-pallet',
+		'bgimg:background-size': '@background-sizes'
 	)
+
 ));
 html {
 	// Scale all elements with the screen when past the maximum screen size.
