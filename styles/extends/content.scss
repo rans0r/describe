@@ -1,13 +1,4 @@
 // Copy
-@include describe(text-center){
-	text-align: center;
-}
-@include describe(text-left){
-	text-align: left;
-}
-@include describe(text-right){
-	text-align: right;
-}
 @include describe(align-middle){
 	vertical-align: middle;
 }
@@ -45,11 +36,7 @@
 	hyphens: auto;
 }
 
-@each $name, $value in project(color-pallet) {
-	@include describe(text-#{$name}){
-		color: $value;
-	}
-}
+
 @each $name, $value in project(font-families) {
 	@include describe(font-#{$name}){
 		font-family: $value;

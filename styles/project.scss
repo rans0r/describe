@@ -1,10 +1,19 @@
 @import 'describe';
 @include describe('project',(
 	'screens': (
-		'sm': 640px,
-		'md': 768px,
-		'lg': 1024px,
-		'xl': 1280px
+		'sm': 				640px,
+		'md': 				768px,
+		'lg': 				1024px,
+		'xl': 				1280px
+	),
+	'spacing': (
+		'0': 				0,
+		'1': 				0.5rem,
+		'2': 				1rem,
+		'3': 				2rem,
+		'4': 				4rem,
+		'5': 				6rem,
+		'7': 				8rem
 	),
 	'color-pallet': (
 		'transparent': 		transparent,
@@ -16,16 +25,125 @@
 		'green':			'@colors.green-600'
 	),
 	'background-sizes': (
-		'full-size': 100% 100%,
-		'full-height': auto 100%,
-		'cover': cover,
-		'contain': contain
+		'full-size': 		100% 100%,
+		'full-height': 		auto 100%,
+		'cover': 			cover,
+		'contain': 			contain
+	),
+	'background-positions': (
+		'left-top': 		left top,
+		'center': 			center,
+		'center-top': 		center top,
+		'right-top': 		right top
+	),
+	'background-repeats': (
+		'no-repeat': 		'no-repeat'
+	),
+	'border-radius': (
+		'none': 			0,
+		'sm': 				0.125rem,
+		'default': 			0.25rem,
+		'md': 				0.375rem,
+		'lg': 				0.5rem,
+		'full': 			9999px
+	),
+	'border-widths': (
+		'0': 				0,
+		'1': 				0.1rem,
+		'2': 				0.2rem,
+		'4': 				0.4rem,
+		'8': 				0.8rem
+	),
+	'border-styles': (
+		'none': 			none,
+		'solid': 			solid
+	),
+	'box-shadows': (
+		'xs': 				'0 0 0 .1rem rgba(0, 0, 0, 0.05)',
+		'sm': 				'0 .1rem .2rem 0 rgba(0, 0, 0, 0.05)',
+		'default': 			'0 .1rem .3rem 0 rgba(0, 0, 0, 0.1), 0 .1rem .2rem 0 rgba(0, 0, 0, 0.06)',
+		'md': 				'0 .4rem .6rem -.1rem rgba(0, 0, 0, 0.1), 0 .2rem .4rem -.1rem rgba(0, 0, 0, 0.06)',
+		'lg': 				'0 1rem 1.5rem -.3rem rgba(0, 0, 0, 0.1), 0 .4rem .6rem -.2rem rgba(0, 0, 0, 0.05)',
+		'xl': 				'0 2rem 2.5rem -.5rem rgba(0, 0, 0, 0.1), 0 1rem 1rem -.5rem rgba(0, 0, 0, 0.04)',
+		'2xl': 				'0 2.5rem 5rem -1.2rem rgba(0, 0, 0, 0.25)',
+		'inner': 			'inset 0 .2rem .4rem 0 rgba(0, 0, 0, 0.06)',
+		'outline': 			'0 0 0 .3rem rgba(66, 153, 225, 0.5)',
+		'none': 			'none',
+	),
+	'cursors': (
+		'auto': 			auto,
+		'default': 			default,
+		'pointer': 			pointer,
+		'wait': 			wait,
+		'text': 			text,
+		'move': 			move,
+		'not-allowed': 		not-allowed,
+	),	
+	'display': (
+		'block': 			block,
+		'inline-block': 	inline-block,
+		'inline': 			inline,
+		'flex': 			flex
+	),
+	'flex-directions': (
+		'row':				row,
+		'row-reverse':		row-reverse,
+		'column':			column,
+		'column-reverse': 	column-reverse
+	),
+	'flex-wraps': (
+		'wrap-reverse': 	wrap-reverse,
+		'wrap': 			wrap,
+		'no-wrap': 			no-wrap
+	),
+	'flex-aligns': (
+		'flex-start': flex-start,
+		'flex-end': flex-end,
+		'center': center,
+		'space-between': space-between
+	),
+	'flex-allow': (
+		'default': 1,
+		'prevent': 0
+	),
+	'alignments': (
+		'left': 			left,
+		'right': 			right,
+		'center': 			center
 	),
 	'utilities': (
 		'text-color:color': '@color-pallet',
 		'bg-color:background-color': '@color-pallet',
 		'border-color:border-color': '@color-pallet',
-		'bgimg:background-size': '@background-sizes'
+		'bgimg:background-size': '@background-sizes',
+		'bgimg:background-position': '@background-positions',
+		'bgimg:background-repeat': '@background-repeats',
+		'border-radius:border-radius': '@border-radius',
+		'border-width:border-width': '@border-widths',
+		'border-style:border-style': '@border-styles',
+		'box-shadow:box-shadow': '@box-shadows',
+		'cursor:cursor': '@cursors',
+		'text:text-align': '@alignments',
+		'display:display': '@display',
+		'flex-direction:flex-direction': '@flex-directions',
+		'flex:flex-wrap': '@flex-wraps',
+		'justify-content:justify-content': '@flex-aligns',
+		'align-items:align-items': '@flex-aligns',
+		'flex-grow:flex-grow': '@flex-allow',
+		'flex-shrink:flex-shrink': '@flex-allow',
+		'width:width': '@widths',
+		'pull-left:margin-left_': '@spacing',
+		'pull-right:margin-right_': '@spacing',
+		'padding:padding': '@spacing',
+		'padding-top:padding-top': '@spacing',
+		'padding-right:padding-right': '@spacing',
+		'padding-bottom:padding-bottom': '@spacing',
+		'padding-left:padding-left': '@spacing',
+		'margin:margin': '@spacing',
+		'margin-top:margin-top': '@spacing',
+		'margin-right:margin-right': '@spacing',
+		'margin-bottom:margin-bottom': '@spacing',
+		'margin-left:margin-left': '@spacing',
 	)
 
 ));
